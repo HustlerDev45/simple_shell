@@ -4,9 +4,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 #include <sys/wait.h>
 
-void execute_command(char *line);
+void exec_cmd(char *line);
 int main(void);
+int exe_cmd(char *command, char **env);
+int main(int argc, char **argv, char **env);
 
 #endif
