@@ -1,4 +1,9 @@
 #include "shell.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 /**
  * exec_cmd - Execute a command.
@@ -6,26 +11,28 @@
  */
 void exec_cmd(char *line)
 {
-	pid_t pid = fork();
+    pid_t pid = fork();
 
-	if (pid < 0)
-	{
-		perror("fork");
-		return;
-	}
+    if (pid < 0)
+    {
+        perror("fork");
+        return;
+    }
 
-	if (pid == 0)
-	{
-		char *argv[] = {"/bin/sh", "-c", line, NULL};
+    if (pid == 0)
+    {
+        /* Tokenize the command */
+        char *argv[] = {"/bin/sh", "-c", NULL, NULL};
+        argv[2] = line;
 
-		execv(argv[0], argv);
-		perror("execv");
-		exit(EXIT_FAILURE);
-	}
-	else
-	{
-		wait(NULL);
-	}
+        execv(argv[0], argv);
+        perror("execv");
+        exit(EXIT_FAILURE);
+    }
+    else
+    {
+        wait(NULL);
+    }
 }
 
 /**
@@ -36,21 +43,21 @@ void exec_cmd(char *line)
  */
 int main(void)
 {
-	char *line = NULL;
-	size_t lenght = 0;
-	ssize_t rd;
+    char *line = NULL;
+    size_t length = 0;
+    ssize_t rd;
 
-	while (1)
-	{
-		printf("$ ");
-		rd = getline(&line, &lenght, stdin);
-		if (rd == -1)
-			break;
+    while (1)
+    {
+        printf("$ ");
+        rd = getline(&line, &length, stdin);
+        if (rd == -1)
+            break;
 
-		execute_command(line);
-	}
+        exec_cmd(line);
+    }
 
-	free(line);
+    free(line);
 
-	return (0);
+    return (0);
 }
