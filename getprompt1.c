@@ -80,3 +80,5 @@ int main(int argc, char **argv, char **env)
 	free(line);
 	return (0);
 }
+// utilisation de strtok pour gerer le PATH sur l'entiereté du shell. //:wq
+//

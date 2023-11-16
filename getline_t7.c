@@ -1,17 +1,19 @@
 #include "shell.h"
 
+/**
+ * exec_cmd - Execute a command.
+ * @line: The command to be executed.
+ */
 void exec_cmd(char *line)
 {
-	/* creation of a new process */
 	pid_t pid = fork();
-	/* here if fork fails it'll print an error msg and continue */
+
 	if (pid < 0)
 	{
 		perror("fork");
 		return;
 	}
 
-	/* the child process */
 	if (pid == 0)
 	{
 		char *argv[] = {"/bin/sh", "-c", line, NULL};
@@ -21,7 +23,6 @@ void exec_cmd(char *line)
 	}
 	else
 	{
-		/* the parent proces waits for the child to finish */
 		wait(NULL);
 	}
 }
@@ -38,21 +39,16 @@ int main(void)
 	size_t lenght = 0;
 	ssize_t rd;
 
-	/* the loop that reads lines and execute them */
 	while (1)
 	{
 		printf("$ ");
 		rd = getline(&line, &lenght, stdin);
-		/* Break the loop if getline fails */
 		if (rd == -1)
 			break;
-
-		/* Add a blank line here */
 
 		execute_command(line);
 	}
 
-	/* frees the memory allocated by getline */
 	free(line);
 
 	return (0);
