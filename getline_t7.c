@@ -17,6 +17,7 @@ void exec_cmd(char *line)
 	if (pid == 0)
 	{
 		char *argv[] = {"/bin/sh", "-c", line, NULL};
+
 		execv(argv[0], argv);
 		perror("execv");
 		exit(EXIT_FAILURE);
