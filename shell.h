@@ -10,6 +10,6 @@
 void exec_cmd(char *line);
 int main(void);
 int exe_cmd(char *command, char **env);
-int main(int argc, char **argv, char **env);
+int prompt(int argc, char **argv, char **env);
 
 #endif
