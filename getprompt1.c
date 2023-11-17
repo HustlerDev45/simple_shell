@@ -44,39 +44,43 @@ int exe_cmd(char *command, char **env)
  * @env: Array of environment variables.
  *
  * Return: Always 0 (Success), 1 on failure.
- *
  */
 int prompt(int argc, char **argv, char **env)
 {
-	char *line = NULL;
-	size_t lenght = 0;
-	ssize_t nrd;
-	char *token;
+    char *line = NULL;
+    size_t length = 0;
+    ssize_t nrd;
+    char *token;
 
-	(void)argc;
-	(void)argv;
+    (void)argc;
+    (void)argv;
 
-	while (1)
-	{
-		printf("$ ");
-		nrd = getline(&line, &lenght, stdin);
-		if (nrd == -1)
-		{
-			free(line);
-			printf("\n");
-			exit(0);
-		}
-		line[nrd - 1] = '\0';
-		token = strtok(line, " ");
-		if (token == NULL)
-			continue;
+    while (1)
+    {
+        printf("$ ");
+        nrd = getline(&line, &length, stdin);
+        if (nrd == -1)
+        {
+            free(line);
+            printf("\n");
+            exit(0);
+        }
+        line[nrd - 1] = '\0';
+        token = strtok(line, " ");
+        if (token == NULL)
+            continue;
 
-		if (exe_cmd(token, env) != 0)
-		{
-			free(line);
-			exit(1);
-		}
-	}
-	free(line);
-	return (0);
+        if (strcmp(token, "exit") == 0) {
+            free(line);
+            exit(0);
+        }
+
+        if (exe_cmd(token, env) != 0)
+        {
+            free(line);
+            exit(1);
+        }
+    }
+    free(line);
+    return (0);
 }
